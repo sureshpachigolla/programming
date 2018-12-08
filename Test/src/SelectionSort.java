@@ -7,13 +7,13 @@ public class SelectionSort {
 		int[] unsorted = new int[] {5,9,8,7,6,0,4,3,2,1};
 		
 		for(int i=0; i < unsorted.length; i++){
-			int min_indx=i;
+			int minIndex=i;
 			for(int j=i+1; j < unsorted.length; j++ ){
-				if(unsorted[min_indx] > unsorted[j]){
-					min_indx = j;
+				if(unsorted[minIndex] > unsorted[j]){
+					minIndex = j;
 				}
-				temp=unsorted[min_indx];
-				unsorted[min_indx]=unsorted[i];
+				temp=unsorted[minIndex];
+				unsorted[minIndex]=unsorted[i];
 				unsorted[i]=temp;
 			}
 		}
