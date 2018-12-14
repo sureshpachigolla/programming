@@ -1,3 +1,7 @@
+/* Time complexity - N log N
+ * Space Complexity - N Log N
+ */
+
 public class MergeSort {
 	public static void main(String args[]){
 		
@@ -5,7 +9,7 @@ public class MergeSort {
 		int[] sortedArray = new int[unsorted.length];
 		
 		sortedArray = mergesort(unsorted);
-		for(int i=0; i < sortedArray.length; i++)
+		for(int i = 0; i < sortedArray.length; i++)
 			System.out.println( sortedArray[i]);
 		
 	}
@@ -21,15 +25,11 @@ public class MergeSort {
 		
 		int lengthOfUnsortedRight=(lengthOfUnsortedArray-arrayMid);
 		int[]  rightUnsortedArray = new int[lengthOfUnsortedRight];
-		int k=0;
-		for(int i=0;i<lengthOfUnsortedLeft; i++){
-			leftUnsortedArray[i] = unsorted[k];
-			k=k+1;
-		}
-		for(int i=0;i<lengthOfUnsortedRight; i++){
-			rightUnsortedArray[i] = unsorted[k];
-			k=k+1;
-		}
+		int k = 0;
+		
+		leftUnsortedArray=copyArray(unsorted, k, lengthOfUnsortedLeft);
+		rightUnsortedArray=copyArray(unsorted, k + lengthOfUnsortedLeft, lengthOfUnsortedRight);
+
 		int[] leftsortedArray=mergesort(leftUnsortedArray);
 		int[] rightsortedArray=mergesort(rightUnsortedArray);
 		int[] sortedArray=merge(leftsortedArray,rightsortedArray);
@@ -39,31 +39,40 @@ public class MergeSort {
 	
 	public static int[] merge(int[] sortedArrayLeft, int[] sortedArrayRight){
 		
-		int i=0, j=0, k=0;
+		int i = 0, j = 0, k = 0;
 		int[] sortedArray = new int[sortedArrayLeft.length + sortedArrayRight.length];
 		
 		while(i < sortedArrayLeft.length && j < sortedArrayRight.length){
 			if(sortedArrayLeft[i] > sortedArrayRight[j]){
 				sortedArray[k] = sortedArrayRight[j];
-				k=k+1;
-				j=j+1;
+				k++;
+				j++;
 			}
 			else{
 				sortedArray[k] = sortedArrayLeft[i];
-				k=k+1;
-				i=i+1;
+				k++;
+				i++;
 			}
 		}
 		while(i < sortedArrayLeft.length){
 			sortedArray[k] = sortedArrayLeft[i];
-			k=k+1;
-			i=i+1;
+			k++;
+			i++;
 		}
 		while(j < sortedArrayRight.length){
 			sortedArray[k] = sortedArrayRight[j];
-			k=k+1;
-			j=j+1;
+			k++;
+			j++;
 		}
 		return sortedArray;
 	}
+    public static int[] copyArray(int[] unsorted, int k, int lengthOfUnsorted){
+    	int[] UnsortedArray = new int[lengthOfUnsorted];
+    	for(int i = 0; i < lengthOfUnsorted; i++){
+			UnsortedArray[i] = unsorted[k];
+			k++;
+		}
+    	return UnsortedArray;
+    }
+	
 }
