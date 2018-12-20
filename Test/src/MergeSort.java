@@ -5,74 +5,73 @@
 public class MergeSort {
 	public static void main(String args[]){
 		
-		int[] unsorted = new int[] {0,9,8,7,6,5,4,3,2,1,0,1,2};
+		int[] unsorted = new int[] {0,9,0,1,11,0,5,6,11,15,18};
 		int[] sortedArray = new int[unsorted.length];
 		
-		sortedArray = mergesort(unsorted);
+		sortedArray = mergesort(unsorted,0, unsorted.length-1);
 		for(int i = 0; i < sortedArray.length; i++)
 			System.out.println( sortedArray[i]);
 		
 	}
 	
-	public static int[] mergesort(int[] unsorted){
-		int lengthOfUnsortedArray = unsorted.length;
-		if(lengthOfUnsortedArray <= 1){
+	public static int[] mergesort(int[] unsorted, int startIndex, int endIndex){
+		if(endIndex - startIndex == 0){
 			return unsorted;
 		}
-		int arrayMid = lengthOfUnsortedArray/2;
-		int lengthOfUnsortedLeft=arrayMid;
-		int[]  leftUnsortedArray = new int[lengthOfUnsortedLeft];
 		
-		int lengthOfUnsortedRight=(lengthOfUnsortedArray-arrayMid);
-		int[]  rightUnsortedArray = new int[lengthOfUnsortedRight];
-		int k = 0;
+		int arrayMid = (startIndex + endIndex)/2;
+		int leftStartIndex = startIndex;
+		int leftEndIndex = arrayMid;
+		int rightStartIndex = arrayMid + 1;
+		int rightEndIndex = endIndex;
 		
-		leftUnsortedArray=copyArray(unsorted, k, lengthOfUnsortedLeft);
-		rightUnsortedArray=copyArray(unsorted, k + lengthOfUnsortedLeft, lengthOfUnsortedRight);
-
-		int[] leftsortedArray=mergesort(leftUnsortedArray);
-		int[] rightsortedArray=mergesort(rightUnsortedArray);
-		int[] sortedArray=merge(leftsortedArray,rightsortedArray);
+		
+		int[] unsortedLeft=mergesort(unsorted, leftStartIndex, leftEndIndex);
+		int[] unSortedRight=mergesort(unsortedLeft, rightStartIndex, rightEndIndex);
+		int[] sortedArray=merge(unsortedLeft,unSortedRight,leftStartIndex, rightStartIndex, rightEndIndex);
 		return sortedArray;
 	}
 	
-	
-	public static int[] merge(int[] sortedArrayLeft, int[] sortedArrayRight){
-		
-		int i = 0, j = 0, k = 0;
-		int[] sortedArray = new int[sortedArrayLeft.length + sortedArrayRight.length];
-		
-		while(i < sortedArrayLeft.length && j < sortedArrayRight.length){
-			if(sortedArrayLeft[i] > sortedArrayRight[j]){
-				sortedArray[k] = sortedArrayRight[j];
+	public static int[] merge(int[] unsortedLeft, int[] unSortedRight,  int leftStartIndex, int rightStartIndex, int rightEndIndex){
+	    
+		int[] sortedArray = new int[unsortedLeft.length];
+	    
+	    int i = leftStartIndex;
+	    int j = rightStartIndex;
+	    int k = leftStartIndex;
+	    
+	    while(i <= rightStartIndex - 1 && j <= rightEndIndex){
+			if(unsortedLeft[i] > unSortedRight[j]){
+				sortedArray[k] = unSortedRight[j];
 				k++;
 				j++;
 			}
 			else{
-				sortedArray[k] = sortedArrayLeft[i];
+				sortedArray[k] = unSortedRight[i];
 				k++;
 				i++;
 			}
 		}
-		while(i < sortedArrayLeft.length){
-			sortedArray[k] = sortedArrayLeft[i];
+		while(i <= rightStartIndex - 1){
+			sortedArray[k] = unSortedRight[i];
 			k++;
 			i++;
 		}
-		while(j < sortedArrayRight.length){
-			sortedArray[k] = sortedArrayRight[j];
+		while(j <= rightEndIndex){
+			sortedArray[k] = unSortedRight[j];
 			k++;
 			j++;
 		}
-		return sortedArray;
-	}
-    public static int[] copyArray(int[] unsorted, int k, int lengthOfUnsorted){
-    	int[] UnsortedArray = new int[lengthOfUnsorted];
-    	for(int i = 0; i < lengthOfUnsorted; i++){
-			UnsortedArray[i] = unsorted[k];
-			k++;
+		for(k=0; k < unsortedLeft.length; k++){
+			if(k < leftStartIndex || k > rightEndIndex){
+				sortedArray[k] = unsortedLeft[k];
+			}
 		}
-    	return UnsortedArray;
-    }
+		
+		return sortedArray;
+	    
+		
+	}
+
 	
 }
