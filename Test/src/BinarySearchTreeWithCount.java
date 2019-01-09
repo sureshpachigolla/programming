@@ -47,19 +47,76 @@ public class BinarySearchTreeWithCount {
 	public void printNode(NodeBST root){
 		if(root != null){
 			printNode(root.leftNode);
-			System.out.printf("data = %d , left NodeCount = %d , right NodeCount = %d", root.data, root.leftNodeCount, root.rightNodeCount).println();;
+			System.out.printf("data = %d , left NodeCount = %d , right NodeCount = %d", root.data, root.leftNodeCount, root.rightNodeCount).println();
 			printNode(root.rightNode);
 			
 		}
 	}
-
 	
+	int largestRec(NodeBST root, int num){
+		
+		if (root != null && root.leftNodeCount + root.rightNodeCount + 1 < num)
+			return 0;
+		
+		int leftCount = root.leftNodeCount;
+		int rightCount = root.rightNodeCount;
+		int k = root.rightNodeCount + 1;
+		int numNodesTrack = leftCount + rightCount + 1;
+		
+		if (rightCount+1 == num){
+			return root.data;
+		}
+		
+		while (k != num){
+			if(root != null){
+				if (k > num){
+					k = k - 1;
+					root = root.rightNode;
+				}else{
+					if ( k < num){
+						k = k + 1;
+						root = root.rightNode;
+					}else{
+						return root.data;
+					}
+				}
+			}
+		}
+		
+		if (k > num){
+			k = k - 1;
+			root = root.rightNode;
+		}else{
+			if ( k < num){
+				k = k + 1;
+				root = root.rightNode;
+			}else{
+				return root.data;
+			}
+		}
+		
+		while (k != num){
+			if(root != null){
+				if (k > num){
+					k = k - 1;
+					root = root.rightNode;
+					
+				}else{
+					if (k < num){
+						k = k + 1 + root.rightNodeCount;;
+						root = root.leftNode;
+					}
+				}
+			}
+		}
+		return root.data;
+	}
+
 	NodeBST root;
 	
 	BinarySearchTreeWithCount(){
 		root = null;
 	}
-	
 
 	public static void main(String[] args) {
 		
@@ -78,7 +135,9 @@ public class BinarySearchTreeWithCount {
 		//Print depth first
 		System.out.println("Inorder output with counts");
 		bst.printNode(bst.root);
-		
+		int temp;
+		temp = bst.largestRec(bst.root,4);
+		System.out.println(temp);
 
 	}
 

@@ -22,8 +22,8 @@ public class BinarySearchTree {
 		NodeBST leftNode;
 		NodeBST rightNode;
 		
-		public NodeBST(int key){
-			data = key;
+		public NodeBST(int data){
+			this.data = data;
 			leftNode = null;	
 			rightNode = null;
 			
@@ -67,7 +67,8 @@ public class BinarySearchTree {
 		}
 		
 		while (!q.isEmpty()){
-			nodeConsidered = new NodeBST(q.remove());
+			nodeConsidered = q.remove();
+			//nodeConsidered = new NodeBST(q.remove());
 			System.out.println(nodeConsidered.data);
 			
 			if (nodeConsidered.leftNode != null){
@@ -81,11 +82,52 @@ public class BinarySearchTree {
 		
 	}
 	
+	public boolean searchNode(NodeBST root, int num){
+		
+		while(root!= null){
+			if(root.data > num){
+				root = root.leftNode;
+			}else if (root.data < num){
+				root = root.rightNode;
+			}else{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void insertRecLoop(NodeBST root, int num){
+		
+		while(true){
+			if (root.data > num){
+				if (root.leftNode == null){
+					root.leftNode = new NodeBST(num);
+					break;
+				}	
+				root = root.leftNode;
+			}else if(root.data < num) {
+				if (root.rightNode == null){
+					root.rightNode = new NodeBST(num);
+					break;
+				}
+				root = root.rightNode;
+			}else{
+				System.out.println("duplicate insertion not allowed: "+ num);
+				break;
+			}
+		}
+	}
+	
 	NodeBST root;
 	
 	BinarySearchTree(){
 		root = null;
 	}
+	
+	public BinarySearchTree(int num){
+		root = new NodeBST(num);
+	}
+	
 	Queue<NodeBST> q = new LinkedList<>();
 
 	public static void main(String[] args) {
@@ -105,12 +147,29 @@ public class BinarySearchTree {
 		System.out.println("Inorder output");
 		bst.printNode(bst.root);
 		
+		//Print level order
 		System.out.println("level order with queue");
 		bst.printNodeBreadth(bst.root);
 		
+		//search in BST
+		boolean foundSW = bst.searchNode(bst.root,19);
+		System.out.println("element found : " + foundSW );
 		
+		//insert nodes using loops
+		BinarySearchTree bstloop = new BinarySearchTree(10);
 		
+		//bstloop.root = bstloop.insertRecLoop(bstloop.root,10);
+		bstloop.insertRecLoop(bstloop.root,20);
+		bstloop.insertRecLoop(bstloop.root,5);
+		bstloop.insertRecLoop(bstloop.root,8);
+		bstloop.insertRecLoop(bstloop.root,25);
+		bstloop.insertRecLoop(bstloop.root,30);
+		bstloop.insertRecLoop(bstloop.root,9);
+		bstloop.insertRecLoop(bstloop.root,4);
+		bstloop.insertRecLoop(bstloop.root,19);
 		
+		System.out.println("level order with queue");
+		bstloop.printNodeBreadth(bstloop.root);
 
 	}
 
